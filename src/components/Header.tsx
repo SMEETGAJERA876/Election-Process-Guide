@@ -11,6 +11,7 @@ const Header: React.FC = () => {
   const location = useLocation();
 
   const navLinks = [
+    { name: 'Home', path: '/' },
     { name: 'Timeline', path: '/timeline' },
     { name: 'Ballot', path: '/ballot' },
     { name: 'Quiz', path: '/quiz' },
