@@ -44,22 +44,27 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      // If logging out, reset local state first
+      if (!firebaseUser) {
+        resetProgress();
+        setUser(null);
+        return;
+      }
+
       setUser(firebaseUser);
       
-      if (firebaseUser) {
-        // When user logs in, fetch their cloud data
-        const userDoc = doc(db, 'users', firebaseUser.uid);
-        const docSnap = await getDoc(userDoc);
-        
-        if (docSnap.exists()) {
-          const cloudData = docSnap.data();
-          if (cloudData.progress) {
-            setProgress(cloudData.progress);
-          }
-        } else {
-          // If no cloud data, reset local progress for the new user
-          resetProgress();
+      // When user logs in, fetch their cloud data
+      const userDoc = doc(db, 'users', firebaseUser.uid);
+      const docSnap = await getDoc(userDoc);
+      
+      if (docSnap.exists()) {
+        const cloudData = docSnap.data();
+        if (cloudData.progress) {
+          setProgress(cloudData.progress);
         }
+      } else {
+        // If no cloud data, reset local progress for the new user
+        resetProgress();
       }
     });
     return () => unsubscribe();
