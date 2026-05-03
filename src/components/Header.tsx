@@ -73,12 +73,34 @@ const Header: React.FC = () => {
           <SettingsModal />
           <HelpModal />
           <div className="w-px h-6 bg-border mx-2 hidden md:block" />
-          <button 
-            onClick={handleAuth}
-            className="hidden md:flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-primary/90 transition-all shadow-md shadow-primary/20 active:scale-95"
-          >
-            <LogIn className="w-4 h-4" /> {user ? 'Sign Out' : 'Sign In'}
-          </button>
+          
+          {user ? (
+            <div className="flex items-center gap-3">
+              <div className="flex flex-col items-end hidden sm:flex">
+                <p className="text-[10px] font-black uppercase tracking-widest text-primary leading-none">
+                  {user.displayName?.split(' ')[0]}
+                </p>
+                <button 
+                  onClick={handleAuth}
+                  className="text-[8px] font-bold text-muted-foreground hover:text-destructive transition-colors uppercase tracking-tighter mt-1"
+                >
+                  Sign Out
+                </button>
+              </div>
+              <img 
+                src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}&background=random`} 
+                alt={user.displayName || 'User'} 
+                className="w-9 h-9 rounded-xl border-2 border-primary/10 shadow-sm hover:border-primary/30 transition-all"
+              />
+            </div>
+          ) : (
+            <button 
+              onClick={handleAuth}
+              className="hidden md:flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-primary/90 transition-all shadow-md shadow-primary/20 active:scale-95"
+            >
+              <LogIn className="w-4 h-4" /> Sign In
+            </button>
+          )}
         </div>
       </div>
     </header>

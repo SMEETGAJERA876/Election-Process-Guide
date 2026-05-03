@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useAppStore } from './store';
 import { stitch } from './services/stitch';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import TimelinePage from './pages/TimelinePage';
@@ -37,7 +39,14 @@ const PageTracker = () => {
 };
 
 function App() {
-  const { theme, highContrast, textSize, region } = useAppStore();
+  const { theme, highContrast, textSize, region, setUser } = useAppStore();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+    return () => unsubscribe();
+  }, [setUser]);
 
   useEffect(() => {
     const root = window.document.documentElement;
