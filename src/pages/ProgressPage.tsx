@@ -25,9 +25,9 @@ const ProgressPage: React.FC = () => {
   const standing = getStanding(quizScore);
 
   const achievements = [
-    { id: 1, title: 'Early Bird', desc: 'Completed registration simulation', icon: Calendar, color: 'bg-blue-500', earned: progress.completedSections.includes('registration') },
-    { id: 2, title: 'Master Juror', desc: 'Perfect or elite score in regional assessment', icon: Star, color: 'bg-orange-500', earned: progress.badges?.includes('master-juror') },
-    { id: 3, title: 'Knowledge Seeker', desc: 'Completed electoral assessment', icon: Target, color: 'bg-purple-500', earned: progress.completedSections.includes('assessment') },
+    { id: 1, title: 'Civic Historian', desc: 'Verified as a proud citizen of India', icon: ShieldCheck, color: 'bg-emerald-500', earned: progress.badges?.includes('civic-historian') },
+    { id: 2, title: 'Verified Voter', desc: 'Confirmed legal voting age (18+)', icon: UserCheck, color: 'bg-blue-600', earned: progress.badges?.includes('verified-voter') },
+    { id: 3, title: 'Master Juror', desc: 'Elite score in regional assessment', icon: Star, color: 'bg-orange-500', earned: progress.badges?.includes('master-juror') },
     { id: 4, title: 'Certified Voter', desc: 'Successfully verified as an elite voter', icon: Award, color: 'bg-indigo-500', earned: isCertified },
   ];
 

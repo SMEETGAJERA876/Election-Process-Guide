@@ -6,7 +6,7 @@ import { useAppStore } from '../store';
 export default function EligibilityChecker() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
-  const { markSectionCompleted, user } = useAppStore();
+  const { markSectionCompleted, user, addBadge } = useAppStore();
 
   useEffect(() => {
     // Reset local state when the user account changes (login/logout)
@@ -22,7 +22,17 @@ export default function EligibilityChecker() {
   ];
 
   const handleAnswer = (ans: boolean) => {
-    setAnswers({ ...answers, [questions[step].id]: ans });
+    const questionId = questions[step].id;
+    setAnswers({ ...answers, [questionId]: ans });
+    
+    if (ans === true) {
+      if (questionId === 'citizen') {
+        addBadge('civic-historian');
+      } else if (questionId === 'age') {
+        addBadge('verified-voter');
+      }
+    }
+    
     setStep(step + 1);
   };
 
