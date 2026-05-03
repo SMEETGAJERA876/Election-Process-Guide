@@ -9,13 +9,18 @@ interface QuizProps {
 }
 
 export default function QuizComponent({ onComplete }: QuizProps) {
-  const { region, saveQuizScore, markSectionCompleted } = useAppStore();
+  const { region, saveQuizScore, markSectionCompleted, user } = useAppStore();
   const regionQuizzes = quizData.filter(q => q.region_id === region);
   
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [submittedQuestions, setSubmittedQuestions] = useState<Record<number, boolean>>({});
   const [score, setScore] = useState(0);
+
+  useEffect(() => {
+    // Reset quiz when the user account changes
+    handleRestart();
+  }, [user]);
 
   useEffect(() => {
     if (currentQuestionIndex >= regionQuizzes.length && regionQuizzes.length > 0) {

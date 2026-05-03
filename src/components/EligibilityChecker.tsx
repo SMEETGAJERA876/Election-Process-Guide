@@ -6,7 +6,13 @@ import { useAppStore } from '../store';
 export default function EligibilityChecker() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
-  const { markSectionCompleted } = useAppStore();
+  const { markSectionCompleted, user } = useAppStore();
+
+  useEffect(() => {
+    // Reset local state when the user account changes (login/logout)
+    setStep(0);
+    setAnswers({});
+  }, [user]);
 
   const questions = [
     { id: 'citizen', text: 'Are you a citizen of India?' },
