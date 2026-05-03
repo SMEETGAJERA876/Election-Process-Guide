@@ -20,7 +20,7 @@ const ProgressTrackerSummary: React.FC = () => {
   const progressPercentage = Math.min(100, Math.round((completedPhases / PHASES.length) * 100));
 
   const handleNextStep = () => {
-    if (completedCount < PHASES.length) {
+    if (completedPhases < PHASES.length) {
       markSectionCompleted(PHASES[currentPhaseIndex].id);
     }
   };
