@@ -4,13 +4,10 @@ import {
   Fingerprint, 
   CheckCircle2, 
   AlertCircle, 
-  Info, 
   Volume2, 
   VolumeX, 
-  Cpu, 
   ShieldCheck, 
   UserCheck,
-  Zap,
   Power,
   RotateCcw,
   Activity
@@ -42,7 +39,6 @@ const BallotSimulator: React.FC = () => {
   const [voteCast, setVoteCast] = useState(false);
   const [showVVPAT, setShowVVPAT] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [simulationStep, setSimulationStep] = useState<'control' | 'ballot' | 'vvpat' | 'done'>('control');
   const [displayMessage, setDisplayMessage] = useState('READY');
   
   const audioContext = useRef<AudioContext | null>(null);
@@ -50,7 +46,7 @@ const BallotSimulator: React.FC = () => {
   useEffect(() => {
     const initAudio = () => {
       if (!audioContext.current) {
-        audioContext.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        audioContext.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       }
     };
     window.addEventListener('click', initAudio);
@@ -82,19 +78,18 @@ const BallotSimulator: React.FC = () => {
     playBeep(880, 0.1, 'sine', 0.2); // Short high beep
     setDisplayMessage('BUSY');
     setIsBallotEnabled(true);
-    setSimulationStep('ballot');
   };
 
   const [countdown, setCountdown] = useState<number | null>(null);
 
   useEffect(() => {
-    let timer: any;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     if (countdown !== null && countdown > 0) {
       timer = setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0) {
-      setCountdown(null);
+      timer = setTimeout(() => setCountdown(null), 0);
     }
-    return () => clearTimeout(timer);
+    return () => { if (timer) clearTimeout(timer); };
   }, [countdown]);
 
   const handleVote = (candidate: Candidate) => {
@@ -102,7 +97,6 @@ const BallotSimulator: React.FC = () => {
     
     setSelectedCandidate(candidate);
     setIsVoting(true);
-    setSimulationStep('vvpat');
     playBeep(440, 0.05, 'sine', 0.1); // Button click sound
     
     // Simulate the voting process
@@ -116,7 +110,6 @@ const BallotSimulator: React.FC = () => {
         setIsVoting(false);
         setVoteCast(true);
         setIsBallotEnabled(false);
-        setSimulationStep('done');
         setDisplayMessage('READY');
         setCountdown(10); // Start 10s countdown
 
@@ -134,12 +127,11 @@ const BallotSimulator: React.FC = () => {
     setVoteCast(false);
     setShowVVPAT(false);
     setIsBallotEnabled(false);
-    setSimulationStep('control');
     setDisplayMessage('READY');
     setCountdown(null);
   };
 
-  const translations: Record<'en' | 'hi', any> = {
+  const translations: Record<'en' | 'hi', Record<string, string>> = {
     en: {
       title: "Practice Ballot Simulator",
       description: "Experience the Electronic Voting Machine (EVM) process in a safe, simulated environment. Learn how to cast your vote and verify it with the VVPAT system.",

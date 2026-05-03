@@ -45,7 +45,7 @@ class StitchService {
    * Tracks user interaction events
    * (Mocking POST /events Stitch webhook)
    */
-  public trackEvent(eventName: string, properties: Record<string, any> = {}) {
+  public trackEvent(eventName: string, properties: Record<string, unknown> = {}) {
     console.log(`[Stitch Webhook] Event: ${eventName}`, properties);
     // In a real app, this would be a fetch call to a Stitch endpoint
     // fetch('/api/stitch/events', { method: 'POST', body: JSON.stringify({ eventName, ...properties }) });
@@ -55,8 +55,8 @@ class StitchService {
    * Saves user progress to the backend
    * (Mocking POST /progress)
    */
-  public async saveProgress(userId: string, _progress: any) {
-    console.log(`[Stitch] Saving progress for user: ${userId}`);
+  public async saveProgress(userId: string, progress: unknown) {
+    console.log(`[Stitch] Saving progress for user: ${userId}`, progress);
     // Simulate persistence delay
     await new Promise(resolve => setTimeout(resolve, 500));
     return { success: true };

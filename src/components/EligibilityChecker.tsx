@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { CheckCircle2, AlertCircle, RefreshCcw, UserCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '../store';
@@ -25,16 +25,16 @@ export default function EligibilityChecker() {
     setAnswers({});
   };
 
-  const isEligible = () => {
+  const isEligible = useCallback(() => {
     return answers.citizen && answers.age && answers.resident && !answers.disqualified;
-  };
+  }, [answers]);
 
   useEffect(() => {
     if (step === questions.length && isEligible()) {
       markSectionCompleted('eligibility');
       markSectionCompleted('timeline');
     }
-  }, [step, markSectionCompleted]);
+  }, [step, markSectionCompleted, isEligible, questions.length]);
 
   return (
     <div className="bg-card border border-border rounded-[2.5rem] p-10 shadow-sm relative overflow-hidden group">

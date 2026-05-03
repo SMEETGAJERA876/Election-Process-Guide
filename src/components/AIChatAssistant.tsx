@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageSquare, Send, X, Bot, User, Loader2, Sparkles, ChevronRight } from 'lucide-react';
+import { MessageSquare, Send, X, Bot, User, Sparkles, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Message {
@@ -76,13 +76,13 @@ export default function AIChatAssistant() {
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }]);
     
-    // Variable delay for realism
-    const typingDelay = Math.random() * 1000 + 1000;
+    // Fixed delay for realism
+    const typingDelay = 1500;
     
     setTimeout(() => {
       setIsTyping(true);
       
-      const responseDelay = Math.random() * 1500 + 1500;
+      const responseDelay = 2000;
       setTimeout(() => {
         const botResponse = getRealisticResponse(userMessage);
         setMessages(prev => [...prev, { 

@@ -21,7 +21,7 @@ interface Step {
 
 interface Scenario {
   id: string;
-  icon: any;
+  icon: React.ElementType;
   title: string;
   description: string;
   steps: Step[];

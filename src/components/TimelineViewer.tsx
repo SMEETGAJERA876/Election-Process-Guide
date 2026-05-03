@@ -38,7 +38,7 @@ export default function TimelineViewer() {
   const expandAll = () => setExpandedIds(milestones.map(m => m.id));
   const collapseAll = () => setExpandedIds([]);
 
-  const handleDownload = (milestone: any) => {
+  const handleDownload = (milestone: typeof milestones[0]) => {
     const doc = new jsPDF();
     
     // Header

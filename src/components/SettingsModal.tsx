@@ -123,7 +123,7 @@ export default function SettingsModal() {
                     ].map((size) => (
                       <button
                         key={size.id}
-                        onClick={() => setTextSize(size.id as any)}
+                        onClick={() => setTextSize(size.id as 'sm' | 'md' | 'lg')}
                         className={`flex-1 py-4 rounded-xl border-2 transition-all flex flex-col items-center gap-1 ${textSize === size.id ? 'border-primary bg-primary/5 text-primary' : 'border-border hover:border-primary/30 text-muted-foreground'}`}
                       >
                         <span className={`font-black ${size.id === 'sm' ? 'text-xs' : size.id === 'md' ? 'text-base' : 'text-xl'}`}>{size.icon}</span>
