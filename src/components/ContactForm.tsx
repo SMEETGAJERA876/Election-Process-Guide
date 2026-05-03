@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Send, User, Mail, MessageSquare, CheckCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const ContactForm: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);

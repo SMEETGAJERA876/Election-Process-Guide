@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import ProgressTrackerSummary from '../components/ProgressTrackerSummary';
-import { CheckCircle, Trophy, Target, Award, Calendar, MapPin, Download, ShieldCheck, FileText, Verified, Star } from 'lucide-react';
+import { CheckCircle, Trophy, Target, Award, Calendar, MapPin, Download, ShieldCheck, Verified, Star } from 'lucide-react';
 import { useAppStore } from '../store';
 import { jsPDF } from 'jspdf';
 

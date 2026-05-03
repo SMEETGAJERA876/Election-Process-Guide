@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { faqs } from '../data/content';
-import { HelpCircle, ChevronDown, MessageCircleQuestion } from 'lucide-react';
+import { ChevronDown, MessageCircleQuestion } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function FAQSection() {

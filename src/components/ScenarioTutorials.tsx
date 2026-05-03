@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, 
   UserPlus, 
-  Globe, 
   IdCard, 
   ArrowRight, 
   CheckCircle2, 

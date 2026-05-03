@@ -139,7 +139,7 @@ const BallotSimulator: React.FC = () => {
     setCountdown(null);
   };
 
-  const t = {
+  const translations: Record<'en' | 'hi', any> = {
     en: {
       title: "Practice Ballot Simulator",
       description: "Experience the Electronic Voting Machine (EVM) process in a safe, simulated environment. Learn how to cast your vote and verify it with the VVPAT system.",
@@ -192,7 +192,9 @@ const BallotSimulator: React.FC = () => {
       step3Title: "3. सत्यापन",
       step3Desc: "VVPAT कांच की खिड़की को देखें। उम्मीदवार के नाम और प्रतीक वाली एक पर्ची 7 सेकंड के लिए दिखाई देगी।",
     }
-  }[language as 'en' | 'hi'] || t.en;
+  };
+
+  const t = translations[language as 'en' | 'hi'] || translations.en;
 
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-12">

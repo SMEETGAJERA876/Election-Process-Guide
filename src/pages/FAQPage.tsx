@@ -1,7 +1,6 @@
 import FAQSection from '../components/FAQSection';
 import ContactForm from '../components/ContactForm';
 import { motion } from 'framer-motion';
-import { Search } from 'lucide-react';
 
 const FAQPage = () => {
   return (

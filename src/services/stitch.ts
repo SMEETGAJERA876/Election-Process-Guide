@@ -55,7 +55,7 @@ class StitchService {
    * Saves user progress to the backend
    * (Mocking POST /progress)
    */
-  public async saveProgress(userId: string, progress: any) {
+  public async saveProgress(userId: string, _progress: any) {
     console.log(`[Stitch] Saving progress for user: ${userId}`);
     // Simulate persistence delay
     await new Promise(resolve => setTimeout(resolve, 500));
