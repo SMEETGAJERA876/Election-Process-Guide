@@ -7,16 +7,17 @@ const PHASES = [
   { id: 'registration', label: 'Registration Window' },
   { id: 'campaign', label: 'Campaign Period' },
   { id: 'voting', label: 'General Voting Day' },
-  { id: 'results', label: 'Results & Post-Election' }
+  { id: 'results', label: 'Results & Post-Election' },
+  { id: 'assessment', label: 'Knowledge Assessment' }
 ];
 
 const ProgressTrackerSummary: React.FC = () => {
   const { progress, markSectionCompleted } = useAppStore();
   
-  const completedCount = progress.completedSections.length;
-  const currentPhaseIndex = Math.min(completedCount, PHASES.length - 1);
+  const completedPhases = PHASES.filter(phase => progress.completedSections.includes(phase.id)).length;
+  const currentPhaseIndex = Math.min(completedPhases, PHASES.length - 1);
   const currentPhase = PHASES[currentPhaseIndex];
-  const progressPercentage = Math.round((completedCount / PHASES.length) * 100);
+  const progressPercentage = Math.min(100, Math.round((completedPhases / PHASES.length) * 100));
 
   const handleNextStep = () => {
     if (completedCount < PHASES.length) {
@@ -42,13 +43,13 @@ const ProgressTrackerSummary: React.FC = () => {
       <div className="flex gap-8 items-center border-l border-border pl-8">
         <div className="text-right hidden md:block">
           <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mb-1">
-            {completedCount >= PHASES.length ? 'Completed' : 'Next Milestone'}
+            {completedPhases >= PHASES.length ? 'Completed' : 'Next Milestone'}
           </p>
           <p className="font-bold text-foreground text-lg">
-            {completedCount >= PHASES.length ? 'Ready to Vote' : currentPhase.label}
+            {completedPhases >= PHASES.length ? 'Ready to Vote' : currentPhase.label}
           </p>
         </div>
-        {completedCount < PHASES.length && (
+        {completedPhases < PHASES.length && (
           <button 
             onClick={handleNextStep}
             className="bg-primary/10 text-primary w-12 h-12 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-all group"
