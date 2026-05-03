@@ -204,7 +204,11 @@ export default function TimelineViewer() {
                               href={ms.link} 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                useAppStore.getState().markSectionCompleted('registration');
+                                useAppStore.getState().markSectionCompleted('campaign');
+                              }}
                               className="text-[10px] font-black text-white uppercase tracking-widest px-4 py-2 bg-primary rounded-lg shadow-sm hover:bg-primary-container transition-all flex items-center gap-1.5"
                             >
                               Register to Vote <ExternalLink className="w-3 h-3" />

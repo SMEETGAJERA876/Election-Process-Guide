@@ -116,6 +116,7 @@ const BallotSimulator: React.FC = () => {
         // Auto-reset after 10 seconds of showing the success message
         setTimeout(() => {
           resetSimulator();
+          useAppStore.getState().markSectionCompleted('results'); // complete the last section as well
         }, 10000);
       }, 7000); // VVPAT shows for 7 seconds
     }, 1200);
@@ -129,6 +130,7 @@ const BallotSimulator: React.FC = () => {
     setIsBallotEnabled(false);
     setDisplayMessage('READY');
     setCountdown(null);
+    useAppStore.getState().markSectionCompleted('voting');
   };
 
   const translations: Record<'en' | 'hi', Record<string, string>> = {
