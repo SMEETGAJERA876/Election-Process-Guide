@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Shield, Sun, Moon } from 'lucide-react';
+import { Shield, Sun, Moon, LogIn } from 'lucide-react';
 import RegionSelector from './RegionSelector';
 import SettingsModal from './SettingsModal';
 import HelpModal from './HelpModal';
@@ -56,6 +56,10 @@ const Header: React.FC = () => {
 
           <SettingsModal />
           <HelpModal />
+          <div className="w-px h-6 bg-border mx-2 hidden md:block" />
+          <button className="hidden md:flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-primary/90 transition-all shadow-md shadow-primary/20 active:scale-95">
+            <LogIn className="w-4 h-4" /> Sign In
+          </button>
         </div>
       </div>
     </header>
