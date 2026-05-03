@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import type { User } from 'firebase/auth';
 
 interface UserProgress {
   completedSections: string[];
@@ -22,6 +23,8 @@ interface AppState {
   toggleHighContrast: () => void;
   markSectionCompleted: (sectionId: string) => void;
   saveQuizScore: (quizId: string, score: number) => void;
+  user: User | null;
+  setUser: (user: User | null) => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -36,6 +39,7 @@ export const useAppStore = create<AppState>()(
         completedSections: [],
         quizScores: {},
       },
+      user: null,
       setRegion: (region) => set({ region }),
       setLanguage: (language) => set({ language }),
       setTextSize: (textSize) => set({ textSize }),
@@ -55,6 +59,7 @@ export const useAppStore = create<AppState>()(
           quizScores: { ...state.progress.quizScores, [quizId]: score },
         }
       })),
+      setUser: (user) => set({ user }),
     }),
     {
       name: 'voter-ed-storage',

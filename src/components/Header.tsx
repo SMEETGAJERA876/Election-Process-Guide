@@ -5,10 +5,26 @@ import RegionSelector from './RegionSelector';
 import SettingsModal from './SettingsModal';
 import HelpModal from './HelpModal';
 import { useAppStore } from '../store';
+import { signInWithPopup, signOut } from 'firebase/auth';
+import { auth, googleProvider } from '../firebase';
 
 const Header: React.FC = () => {
-  const { theme, setTheme } = useAppStore();
+  const { theme, setTheme, user, setUser } = useAppStore();
   const location = useLocation();
+
+  const handleAuth = async () => {
+    try {
+      if (user) {
+        await signOut(auth);
+        setUser(null);
+      } else {
+        const result = await signInWithPopup(auth, googleProvider);
+        setUser(result.user);
+      }
+    } catch (error) {
+      console.error("Auth error:", error);
+    }
+  };
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -57,8 +73,11 @@ const Header: React.FC = () => {
           <SettingsModal />
           <HelpModal />
           <div className="w-px h-6 bg-border mx-2 hidden md:block" />
-          <button className="hidden md:flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-primary/90 transition-all shadow-md shadow-primary/20 active:scale-95">
-            <LogIn className="w-4 h-4" /> Sign In
+          <button 
+            onClick={handleAuth}
+            className="hidden md:flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-primary/90 transition-all shadow-md shadow-primary/20 active:scale-95"
+          >
+            <LogIn className="w-4 h-4" /> {user ? 'Sign Out' : 'Sign In'}
           </button>
         </div>
       </div>
