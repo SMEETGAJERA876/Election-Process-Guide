@@ -62,6 +62,9 @@ export default function QuizComponent({ onComplete }: QuizProps) {
       if (score >= 3) {
         markSectionCompleted('assessment');
       }
+      if (score >= 10) {
+        useAppStore.getState().addBadge('master-juror');
+      }
     }
     setCurrentQuestionIndex(i => i + 1);
   };

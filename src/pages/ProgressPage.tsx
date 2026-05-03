@@ -13,11 +13,22 @@ const ProgressPage: React.FC = () => {
   const isEverythingDone = sectionsToComplete.every(s => progress.completedSections.includes(s));
   const isCertified = progress.completedSections.includes('certified');
 
+  const quizScore = progress.quizScores[`quiz-${region}`] || 0;
+  
+  const getStanding = (score: number) => {
+    if (score >= 12) return { label: 'Master Juror', color: 'text-orange-600', bg: 'bg-orange-600/10' };
+    if (score >= 8) return { label: 'Civic Advocate', color: 'text-primary', bg: 'bg-primary/10' };
+    if (score >= 4) return { label: 'Informed Citizen', color: 'text-green-600', bg: 'bg-green-600/10' };
+    return { label: 'Novice Voter', color: 'text-muted-foreground', bg: 'bg-muted' };
+  };
+
+  const standing = getStanding(quizScore);
+
   const achievements = [
     { id: 1, title: 'Early Bird', desc: 'Completed registration simulation', icon: Calendar, color: 'bg-blue-500', earned: progress.completedSections.includes('registration') },
-    { id: 2, title: 'Local Expert', desc: 'Mastered your regional election data', icon: MapPin, color: 'bg-green-500', earned: true },
+    { id: 2, title: 'Master Juror', desc: 'Perfect or elite score in regional assessment', icon: Star, color: 'bg-orange-500', earned: progress.badges?.includes('master-juror') },
     { id: 3, title: 'Knowledge Seeker', desc: 'Completed electoral assessment', icon: Target, color: 'bg-purple-500', earned: progress.completedSections.includes('assessment') },
-    { id: 4, title: 'Certified Voter', desc: 'Successfully verified as an elite voter', icon: Award, color: 'bg-orange-500', earned: isCertified },
+    { id: 4, title: 'Certified Voter', desc: 'Successfully verified as an elite voter', icon: Award, color: 'bg-indigo-500', earned: isCertified },
   ];
 
   const handleDownloadCertificate = () => {
@@ -127,6 +138,15 @@ const ProgressPage: React.FC = () => {
           <p className="text-xl text-muted-foreground leading-relaxed">
             Track your journey toward becoming a fully informed and registered voter. Complete all modules to earn your <span className="text-primary font-bold">Certified Voter Badge</span>.
           </p>
+          <div className="mt-6 flex items-center gap-4">
+             <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Current Standing:</span>
+             <span className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest ${standing.bg} ${standing.color}`}>
+               {standing.label}
+             </span>
+             <span className="text-xs font-bold text-muted-foreground">
+               Score: {quizScore} / 12
+             </span>
+          </div>
         </div>
         <div className="flex flex-wrap gap-4">
            {isCertified && (

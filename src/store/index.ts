@@ -5,6 +5,7 @@ import type { User } from 'firebase/auth';
 interface UserProgress {
   completedSections: string[];
   quizScores: Record<string, number>;
+  badges: string[];
 }
 
 type Theme = 'light' | 'dark';
@@ -27,6 +28,7 @@ interface AppState {
   setUser: (user: User | null) => void;
   resetProgress: () => void;
   setProgress: (progress: UserProgress) => void;
+  addBadge: (badgeId: string) => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -40,6 +42,7 @@ export const useAppStore = create<AppState>()(
       progress: {
         completedSections: [],
         quizScores: {},
+        badges: [],
       },
       user: null,
       setRegion: (region) => set({ region }),
@@ -66,9 +69,18 @@ export const useAppStore = create<AppState>()(
         progress: {
           completedSections: [],
           quizScores: {},
+          badges: [],
         }
       }),
       setProgress: (progress) => set({ progress }),
+      addBadge: (badgeId) => set((state) => ({
+        progress: {
+          ...state.progress,
+          badges: state.progress.badges?.includes(badgeId)
+            ? state.progress.badges
+            : [...(state.progress.badges || []), badgeId],
+        }
+      })),
     }),
     {
       name: 'voter-ed-storage',
