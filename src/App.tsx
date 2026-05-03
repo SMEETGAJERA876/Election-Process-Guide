@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useAppStore } from './store';
 import { stitch } from './services/stitch';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
+import { auth, db } from './firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import TimelinePage from './pages/TimelinePage';
@@ -39,14 +40,45 @@ const PageTracker = () => {
 };
 
 function App() {
-  const { theme, highContrast, textSize, region, setUser } = useAppStore();
+  const { theme, highContrast, textSize, region, setUser, progress, user, setProgress, resetProgress } = useAppStore();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      setUser(firebaseUser);
+      
+      if (firebaseUser) {
+        // When user logs in, fetch their cloud data
+        const userDoc = doc(db, 'users', firebaseUser.uid);
+        const docSnap = await getDoc(userDoc);
+        
+        if (docSnap.exists()) {
+          const cloudData = docSnap.data();
+          if (cloudData.progress) {
+            setProgress(cloudData.progress);
+          }
+        } else {
+          // If no cloud data, reset local progress for the new user
+          resetProgress();
+        }
+      }
     });
     return () => unsubscribe();
-  }, [setUser]);
+  }, [setUser, setProgress, resetProgress]);
+
+  // Automatically save progress to cloud whenever it changes
+  useEffect(() => {
+    if (user) {
+      const saveToCloud = async () => {
+        try {
+          const userDoc = doc(db, 'users', user.uid);
+          await setDoc(userDoc, { progress }, { merge: true });
+        } catch (error) {
+          console.error("Error saving to cloud:", error);
+        }
+      };
+      saveToCloud();
+    }
+  }, [progress, user]);
 
   useEffect(() => {
     const root = window.document.documentElement;

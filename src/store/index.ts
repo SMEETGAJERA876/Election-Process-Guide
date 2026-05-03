@@ -25,6 +25,8 @@ interface AppState {
   saveQuizScore: (quizId: string, score: number) => void;
   user: User | null;
   setUser: (user: User | null) => void;
+  resetProgress: () => void;
+  setProgress: (progress: UserProgress) => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -60,6 +62,13 @@ export const useAppStore = create<AppState>()(
         }
       })),
       setUser: (user) => set({ user }),
+      resetProgress: () => set({
+        progress: {
+          completedSections: [],
+          quizScores: {},
+        }
+      }),
+      setProgress: (progress) => set({ progress }),
     }),
     {
       name: 'voter-ed-storage',
