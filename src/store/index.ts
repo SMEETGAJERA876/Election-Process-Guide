@@ -1,0 +1,63 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+interface UserProgress {
+  completedSections: string[];
+  quizScores: Record<string, number>;
+}
+
+type Theme = 'light' | 'dark';
+
+interface AppState {
+  region: string;
+  language: string;
+  textSize: 'sm' | 'md' | 'lg';
+  theme: Theme;
+  highContrast: boolean;
+  progress: UserProgress;
+  setRegion: (region: string) => void;
+  setLanguage: (lang: string) => void;
+  setTextSize: (size: 'sm' | 'md' | 'lg') => void;
+  setTheme: (theme: Theme) => void;
+  toggleHighContrast: () => void;
+  markSectionCompleted: (sectionId: string) => void;
+  saveQuizScore: (quizId: string, score: number) => void;
+}
+
+export const useAppStore = create<AppState>()(
+  persist(
+    (set) => ({
+      region: 'IN', 
+      language: 'en',
+      textSize: 'md',
+      theme: 'light',
+      highContrast: false,
+      progress: {
+        completedSections: [],
+        quizScores: {},
+      },
+      setRegion: (region) => set({ region }),
+      setLanguage: (language) => set({ language }),
+      setTextSize: (textSize) => set({ textSize }),
+      setTheme: (theme) => set({ theme }),
+      toggleHighContrast: () => set((state) => ({ highContrast: !state.highContrast })),
+      markSectionCompleted: (sectionId) => set((state) => ({
+        progress: {
+          ...state.progress,
+          completedSections: state.progress.completedSections.includes(sectionId)
+            ? state.progress.completedSections
+            : [...state.progress.completedSections, sectionId],
+        }
+      })),
+      saveQuizScore: (quizId, score) => set((state) => ({
+        progress: {
+          ...state.progress,
+          quizScores: { ...state.progress.quizScores, [quizId]: score },
+        }
+      })),
+    }),
+    {
+      name: 'voter-ed-storage',
+    }
+  )
+);
